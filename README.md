@@ -1,54 +1,49 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal starter
-</h1>
+# Invo Passenger Frontend App
 
-## 🚀 Quick start
+## Description
 
-1.  **Create a Gatsby site.**
+- This is the frontend side of the invo_passenger project!
+- It allow us to login, see our rides, select the ones who were completed and start creating our invoicing process!
+- Be careful, we can just create invoices from COMPLETED rides and must be one invoice per ride, we cannot generate duplicated ones, but don't worry the application won't let you make those mistakes ;)
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+## Tech stack and strategies
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+- So we used React JS!
+- We did not have the need to use redux, just hooks!
+- We have our design kit with MaterialUI
+- It an application not based on server side render, for now but it's ok! Due to is only for internal users ;)
 
-2.  **Start developing.**
+## Project Structure:
 
-    Navigate into your new site’s directory and start it up.
+- src
+  - adapters `This is for anything outside our application, and needs to be configured from there`
+  - components `For our couple o componets`
+  - hooks `All the amazing hooks live here!`
+  - pages `Our pages where we can interact and merge some components inside`
+  - services `This is our intermediate layer to call our api services`
+  - theme `I's barely used now but it's a good practice to manage themes at some point`
+  - utils `It's for any utility function and reusable`
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+## Run the app
 
-3.  **Open the code and start customizing!**
+To run this application, we just need to make:
 
-    Your site is now running at http://localhost:8000!
+```
+npm install && npm start
+```
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+And will live in our `localhost:3000` take a look ;)
 
-4.  **Learn more**
+## TODO:
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+- We need some cleanups in our pages and maybe decouple a bit more our components in small ones, following the atomic design <3
+- Improve Hooks
+- Improve Styling
+- Add tests if possible
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+```
+HAPPY CODING!
 
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
 
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
+Paolo Reyes, Lima Peru, 27 Oct 2021
+```

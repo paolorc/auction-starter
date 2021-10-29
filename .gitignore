@@ -1,3 +1,22 @@
-node_modules/
-.cache/
-public
+# compiled output
+dist
+node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+coverage
+.nyc_output
+
+# Env
+.env
+
+# IDE - VSCode
+.vscode/*
+!.vscode/launch.json
