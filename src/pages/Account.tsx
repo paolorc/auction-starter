@@ -10,14 +10,26 @@ import {
   Tabs,
   Typography,
 } from '@mui/material';
-import { ExitToApp } from '@mui/icons-material';
+import { ExitToApp, Home } from '@mui/icons-material';
 
 import { useUser } from '../hooks/useUser';
+import { AccountApplied } from '../components/Account/Applied';
+import { IAccount } from '../services/getAccount';
+import { Listings } from '../components/Account/Listing';
 
 export const tabNames = {
   Applied: 'applied',
-  Finished: 'finished',
   Listings: 'listings',
+};
+
+const renderView = (account: IAccount, tab: string) => {
+  const component = {
+    applied: <AccountApplied account={account} />,
+    finished: <AccountApplied account={account} />,
+    listings: <Listings account={account} />,
+  };
+
+  return component[tab];
 };
 
 export function Account() {
@@ -50,10 +62,20 @@ export function Account() {
     <Box height="150">
       <AppBar position="static">
         <Box display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="h6" component="div">
-            Profile {account.name} {account.lastName}
-          </Typography>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            href="/home"
+            color="inherit"
+          >
+            <Home />
+            <Typography variant="h6" component="div">
+              Back Home {account.firstName} {account.lastName}
+            </Typography>
+          </IconButton>
 
+          <div style={{ width: '90%' }}></div>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -86,16 +108,11 @@ export function Account() {
                   textColor="secondary"
                   indicatorColor="secondary"
                 >
-                  <Tab value={tabNames.Listings} label="Listings" />
-                  <Tab value={tabNames.Applied} label="Applied" />
-                  <Tab value={tabNames.Finished} label="Finished" />
+                  <Tab value={tabNames.Listings} label="Your Listings" />
+                  <Tab value={tabNames.Applied} label="Your Applies" />
                 </Tabs>
 
-                {/* {tab === tabNames.Listings ? (
-                  <Ride toggleTab={handleChange} />
-                ) : (
-                  <Invoice />
-                )} */}
+                {renderView(account, tab)}
               </Box>
             )}
           </Grid>

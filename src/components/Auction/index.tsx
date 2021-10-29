@@ -1,59 +1,107 @@
 import {
+  ExpandMore,
+  FavoriteBorder,
+  StarBorderTwoTone,
+} from '@mui/icons-material';
+import {
   Alert,
+  Avatar,
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
   Checkbox,
   CircularProgress,
+  Collapse,
+  Divider,
   Grid,
+  IconButton,
   Modal,
   TextField,
   Typography,
 } from '@mui/material';
+import { blue, red } from '@mui/material/colors';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
+import { Redirect } from 'react-router';
+import { useAuctionCreator } from '../../hooks/useAuctionCreator';
 
 import { useAuctions } from '../../hooks/useAuctions';
+import { IAccount } from '../../services/getAccount';
 
-export function Auction() {
-  const { loading, auctions, getAuctions } = useAuctions();
+const defaultImg = 'https://cdn.hswstatic.com/gif/yard-sale-1.jpg';
+
+export function Auction({ account }: { account: IAccount }) {
+  const { loading, auctions, getAuctions, setAuctions } = useAuctions();
+  const {
+    creating,
+    auctionCreated,
+    publishAuction,
+    setCreating,
+    applyAuction,
+    discardAuction,
+  } = useAuctionCreator();
   const [errorMsg, setErrorMsg] = useState('');
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
-  useEffect(() => {}, [loading]);
+  useEffect(() => {
+    getAuctions({ showcased: true, status: 'active' });
+  }, [auctionCreated]);
 
-  //   const handleProcessInvoices = () => {
-  //     setErrorMsg('');
-  //     setCreating(true);
+  const cleanPublishState = () => {
+    setImageUrl('');
+    setCategory('');
+    setDescription('');
+    setTitle('');
+  };
 
-  //     const completedSelectedRides = rows
-  //       .filter((row) => row.status === 'COMPLETED' && row.selected)
-  //       .map((row) => row.id);
+  const handlePublisher = () => {
+    setErrorMsg('');
+    setCreating(true);
 
-  //     console.log(completedSelectedRides, 'rides to send');
+    publishAuction({
+      title,
+      description,
+      category,
+      imageUrl,
+    })
+      .then(() => {
+        setCreating(false);
+        toggleModal();
+      })
+      .catch((error) => {
+        setCreating(false);
+        setErrorMsg(error.message);
+        console.log(error.message);
+        toggleModal();
+      });
+  };
 
-  //     createInvoice({
-  //       companyName: company,
-  //       taxpayerNumber: taxpayer,
-  //       ridesId: completedSelectedRides,
-  //     })
-  //       .then(() => {
-  //         // change tab
-  //         toggleTab('', tabNames.Invoices);
+  const handleApply = (auctionId: string) => {
+    setCreating(true);
 
-  //         setCreating(false);
-  //         toggleModal();
-  //       })
-  //       .catch((error) => {
-  //         setCreating(false);
-  //         setErrorMsg(error.message);
+    applyAuction(auctionId).then((data) => {
+      setCreating(false);
+    });
+  };
 
-  //         console.log(error.message);
-  //       });
-  //   };
+  const handleDiscard = (auctionId: string) => {
+    setCreating(true);
 
-  const toggleModal = () => setOpen((prev) => !prev);
+    discardAuction(auctionId).then((data) => {
+      setCreating(false);
+    });
+  };
 
-  const handleClose = () => {
-    toggleModal();
+  const toggleModal = () => {
+    setOpen((prev) => !prev);
+    cleanPublishState();
   };
 
   return (
@@ -73,7 +121,7 @@ export function Auction() {
             <Box sx={{ width: '100%' }} flexGrow={1}>
               <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={toggleModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
               >
@@ -98,15 +146,14 @@ export function Auction() {
                     Please complete the fields
                   </Typography>
 
-                  {/* <div>
+                  <div>
                     <TextField
                       fullWidth
                       required
-                      id="companyName"
-                      label="Company Name"
+                      label="Tilte"
                       margin="normal"
-                      onChange={(e) => setCompany(e.target.value)}
-                      value={company}
+                      onChange={(e) => setTitle(e.target.value)}
+                      value={title}
                     />
                   </div>
 
@@ -114,23 +161,43 @@ export function Auction() {
                     <TextField
                       fullWidth
                       required
-                      id="Taxpayer Number"
-                      label="Taxpayer Number"
+                      label="Description"
                       margin="normal"
-                      onChange={(e) => setTaxpayer(e.target.value)}
-                      value={taxpayer}
+                      onChange={(e) => setDescription(e.target.value)}
+                      value={description}
                     />
-                  </div> */}
+                  </div>
+
+                  <div>
+                    <TextField
+                      fullWidth
+                      required
+                      label="Category"
+                      margin="normal"
+                      onChange={(e) => setCategory(e.target.value)}
+                      value={category}
+                    />
+                  </div>
+
+                  <div>
+                    <TextField
+                      fullWidth
+                      label="Imagen URL (if not, default is applied)"
+                      margin="normal"
+                      onChange={(e) => setImageUrl(e.target.value)}
+                      value={imageUrl}
+                    />
+                  </div>
 
                   <Box marginTop="10">
                     <Button
-                      // disabled={creating}
+                      disabled={creating}
                       fullWidth
                       variant="contained"
                       color="info"
-                      // onClick={handleProcessInvoices}
+                      onClick={handlePublisher}
                     >
-                      Create Invoices
+                      Create Auction!
                     </Button>
                   </Box>
                 </Box>
@@ -139,26 +206,142 @@ export function Auction() {
               <div style={{ width: '100%' }}>
                 <div style={{ padding: '20px' }}>
                   <Typography id="modal-modal-title">
-                    Select one or more COMPLETED rides to start generating
-                    invoices
+                    Here we have our popular Auctions listed!
                   </Typography>
                 </div>
-
-                {/* {(pickAll || rows.some((ride) => ride.selected === true)) && (
-                  <div style={{ padding: '20px' }}>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={toggleModal}
-                    >
-                      Create Invoice
-                    </Button>
-                  </div>
-                )} */}
 
                 {Boolean(errorMsg) && (
                   <div>
                     <Alert severity="error">{errorMsg}</Alert>
+                  </div>
+                )}
+
+                <div style={{ padding: '20px' }}>
+                  <Button variant="outlined" color="info" onClick={toggleModal}>
+                    Create New Auction
+                  </Button>
+                </div>
+
+                {auctions.length > 0 ? (
+                  auctions.map((auct) => {
+                    const alreadyApplied = auct.appliers?.includes(
+                      account._id as string,
+                    );
+
+                    const myListing = auct.owner._id === account._id;
+
+                    console.log(myListing);
+
+                    return (
+                      <Card
+                        key={auct._id}
+                        sx={{ maxWidth: 345, marginBottom: 4 }}
+                      >
+                        <CardHeader
+                          avatar={
+                            <Avatar
+                              sx={{ bgcolor: blue[500] }}
+                              aria-label="recipe"
+                            >
+                              {auct.owner.firstName.slice(0, 1)}
+                              {auct.owner.lastName.slice(0, 1)}
+                            </Avatar>
+                          }
+                          title={auct.title}
+                          subheader={new Date(auct.createdAt).toLocaleString()}
+                        />
+                        <CardMedia
+                          component="img"
+                          height="100"
+                          image={auct.imageUrl || defaultImg}
+                          loading="lazy"
+                          alt="Sell"
+                        />
+                        <CardContent>
+                          <Typography variant="body2" color="text.secondary">
+                            {auct.description}
+                            <Divider />
+                            <b>Total people applied: {auct.appliers?.length}</b>
+                          </Typography>
+                        </CardContent>
+
+                        <CardActions disableSpacing>
+                          {myListing && (
+                            <Typography variant="body2" color="text.secondary">
+                              Share your listing with your friends!
+                            </Typography>
+                          )}
+
+                          {!alreadyApplied && auct.owner._id !== account._id && (
+                            <Button
+                              variant="contained"
+                              color="success"
+                              onClick={(e) => handleApply(auct?._id)}
+                            >
+                              Apply now =D
+                            </Button>
+                          )}
+
+                          {alreadyApplied && auct.owner._id !== account._id && (
+                            <Button
+                              variant="contained"
+                              color="warning"
+                              onClick={(e) => handleDiscard(auct?._id)}
+                            >
+                              Discard now =(
+                            </Button>
+                          )}
+
+                          <IconButton aria-label="share">
+                            {/* <ShareIcon /> */}
+                          </IconButton>
+                          {/* <ExpandMore
+                          expand={expanded}
+                          onClick={handleExpandClick}
+                          aria-expanded={expanded}
+                          aria-label="show more"
+                        >
+                          <ExpandMoreIcon />
+                        </ExpandMore> */}
+                        </CardActions>
+
+                        <Collapse
+                          // in={expanded}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <CardContent>
+                            <Typography paragraph>Method:</Typography>
+                            <Typography>
+                              Set aside off of the heat to let rest for 10
+                              minutes, and then serve.
+                            </Typography>
+                          </CardContent>
+                        </Collapse>
+                      </Card>
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      padding: '20px',
+                    }}
+                  >
+                    <Typography id="modal-modal-title">
+                      Upss It seems that nobody have something to drop off here,
+                      start creating!
+                      <Box marginTop="10" paddingTop="30">
+                        <Button
+                          // disabled={creating}
+                          fullWidth
+                          variant="contained"
+                          color="info"
+                          // onClick={() => <Redirect to={} />}
+                        >
+                          Create Auction!
+                        </Button>
+                      </Box>
+                    </Typography>
                   </div>
                 )}
               </div>

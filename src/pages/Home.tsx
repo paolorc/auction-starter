@@ -10,10 +10,11 @@ import {
   Tabs,
   Typography,
 } from '@mui/material';
-import { ExitToApp } from '@mui/icons-material';
+import { ExitToApp, Person } from '@mui/icons-material';
 
 import { useUser } from '../hooks/useUser';
 import { Auction } from '../components/Auction';
+import { Winner } from '../components/Winner';
 
 export const tabNames = {
   Auctions: 'auctions',
@@ -37,7 +38,6 @@ export function Home() {
 
     return <Redirect to="/login" />;
   }
-
   const handleExit = () => {
     logout();
   };
@@ -50,9 +50,20 @@ export function Home() {
     <Box height="150">
       <AppBar position="static">
         <Box display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="h6" component="div">
-            Welcome! {account.name} {account.lastName}
-          </Typography>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            href="/account"
+            color="inherit"
+          >
+            <Person />{' '}
+            <Typography variant="h6" component="div">
+              {account.firstName} {account.lastName}
+            </Typography>
+          </IconButton>
+
+          <div style={{ width: '90%' }}></div>
 
           <IconButton
             aria-label="account of current user"
@@ -90,7 +101,11 @@ export function Home() {
                   <Tab value={tabNames.Winners} label="Winners" />
                 </Tabs>
 
-                {tab === tabNames.Auctions ? <Auction /> : <Auction />}
+                {tab === tabNames.Auctions ? (
+                  <Auction account={account} />
+                ) : (
+                  <Winner account={account} />
+                )}
               </Box>
             )}
           </Grid>

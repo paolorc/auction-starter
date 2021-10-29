@@ -22,7 +22,7 @@ export function useAuctionCreator() {
   const publishAuction = (data: Partial<IAuction>) => {
     setCreating(true);
 
-    publishAuctionService(data).then((data) => {
+    return publishAuctionService(data).then((data) => {
       setAuctionCreated(data);
       setCreating(false);
     });
@@ -31,7 +31,7 @@ export function useAuctionCreator() {
   const unpublishAuction = (data: IUnpublish) => {
     setCreating(true);
 
-    unpublishAuctionService(data).then((data) => {
+    return unpublishAuctionService(data).then((data) => {
       setCreating(false);
     });
   };
@@ -39,7 +39,7 @@ export function useAuctionCreator() {
   const updateAuction = (id: string, data: Partial<IAuction>) => {
     setCreating(true);
 
-    updateAuctionService(id, data).then((data) => {
+    return updateAuctionService(id, data).then((data) => {
       setAuctionCreated(data);
       setCreating(false);
     });
@@ -48,7 +48,7 @@ export function useAuctionCreator() {
   const setWinner = (auctionId: string, winnerId: string) => {
     setCreating(true);
 
-    setWinnerService(auctionId, winnerId).then((data) => {
+    return setWinnerService(auctionId, winnerId).then((data) => {
       setAuctionCreated(data);
       setCreating(false);
     });
@@ -57,7 +57,7 @@ export function useAuctionCreator() {
   const applyAuction = (auctionId: string) => {
     setCreating(true);
 
-    applyAuctionService(auctionId).then((data) => {
+    return applyAuctionService(auctionId).then((data) => {
       setAuctionCreated(data);
       setCreating(false);
     });
@@ -66,7 +66,7 @@ export function useAuctionCreator() {
   const discardAuction = (auctionId: string) => {
     setCreating(true);
 
-    discardAuctionService(auctionId).then((data) => {
+    return discardAuctionService(auctionId).then((data) => {
       setAuctionCreated(data);
       setCreating(false);
     });

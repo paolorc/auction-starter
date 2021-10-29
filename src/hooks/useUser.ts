@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { getAccount } from '../services/getAccount';
+import { getAccount, IAccount } from '../services/getAccount';
 import { ILogin, login as loginService } from '../services/login';
 import { getJWT, removeJWT, setJWT } from '../utils/storage';
 
@@ -11,7 +11,7 @@ export function useUser() {
     loading: false,
     error: false,
     jwt: jwtFromStorage(),
-    account: {} as any,
+    account: {} as IAccount,
   };
 
   const [state, setState] = useState(initial);

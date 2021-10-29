@@ -11,6 +11,7 @@ import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 
 import theme from './theme';
+import { Account } from './pages/Account';
 
 export const NotFound = () => {
   return <Redirect to="/home" />;
@@ -23,6 +24,7 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/home" component={Home} />
+          <Route exact path="/account" component={Account} />
           <Route component={NotFound} />
         </Switch>
       </Router>

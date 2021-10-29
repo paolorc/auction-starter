@@ -6,18 +6,20 @@ export interface IRequestAuctions {
   page?: number;
   limit?: number;
   applied?: boolean;
+  winners?: boolean;
   showcased?: boolean;
   status?: string;
 }
 
 export interface IAuction {
-  _id?: string;
+  _id: string;
   title: string;
   description: string;
   category: string;
-  owner: string | IAccount;
-  winner?: string | IAccount;
-  appliers?: [string | IAccount];
+  imageUrl: string;
+  owner: any;
+  winner: any;
+  appliers?: any[];
   status: string;
   finishedAt?: Date;
   createdAt: Date;
