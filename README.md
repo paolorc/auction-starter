@@ -1,7 +1,7 @@
 # Auction Now app
 
 Working example!
-https://617be8ff0e5bd2fc44cb6455--relaxed-leakey-8074fd.netlify.app/login
+https://617be8ff0e5bd2fc44cb6455--relaxed-leakey-8074fd.netlify.app
 
 ## Description
 
