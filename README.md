@@ -1,23 +1,20 @@
-# Invo Passenger Frontend App
+# Auction Now app
 
 ## Description
 
-- This is the frontend side of the invo_passenger project!
-- It allow us to login, see our rides, select the ones who were completed and start creating our invoicing process!
-- Be careful, we can just create invoices from COMPLETED rides and must be one invoice per ride, we cannot generate duplicated ones, but don't worry the application won't let you make those mistakes ;)
+- This is the frontend side of the auctions now project!
 
 ## Tech stack and strategies
 
 - So we used React JS!
 - We did not have the need to use redux, just hooks!
 - We have our design kit with MaterialUI
-- It an application not based on server side render, for now but it's ok! Due to is only for internal users ;)
 
 ## Project Structure:
 
 - src
   - adapters `This is for anything outside our application, and needs to be configured from there`
-  - components `For our couple o componets`
+  - components `For our couple o components`
   - hooks `All the amazing hooks live here!`
   - pages `Our pages where we can interact and merge some components inside`
   - services `This is our intermediate layer to call our api services`
